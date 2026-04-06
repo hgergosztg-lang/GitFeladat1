@@ -2,8 +2,12 @@
 header("Content-Type: application/json; charset=UTF-8");
 
 try {
-    $conn = new PDO('mysql:host=localhost;dbname=hgergo16', 'hgergo16', 'Gamf123.',
-                    array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+    $conn = new PDO(
+        'mysql:host=mysql.omega;dbname=hgergo16',
+        'hgergo16@idbp.omega.c-host.hu',
+        'A_TE_JELSZÓD',
+        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+    );
     $conn->exec("set names utf8");
 } catch (PDOException $e) {
     die(json_encode(["error" => $e->getMessage()]));
