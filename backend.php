@@ -1,23 +1,21 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
 
-$host = "localhost";
-$db_name = "ADATBAZIS_NEVE";
-$username = "FELHASZNALONEV";
-$password = "JELSZO";
-
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
+    $conn = new PDO('mysql:host=localhost;dbname=hgergo16', 'hgergo16', 'Gamf123.',
+                    array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+    $conn->exec("set names utf8");
+} catch (PDOException $e) {
     die(json_encode(["error" => $e->getMessage()]));
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    $stmt = $conn->query("SELECT * FROM helysegek");
-    echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    $stmt = $conn->prepare("SELECT * FROM helysegek");
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($results);
 }
 
 if ($method === 'POST') {
@@ -25,6 +23,7 @@ if ($method === 'POST') {
     if (!empty($data->nev) && !empty($data->orszag)) {
         $stmt = $conn->prepare("INSERT INTO helysegek (nev, orszag) VALUES (?, ?)");
         $stmt->execute([$data->nev, $data->orszag]);
+        echo json_encode(["status" => "siker"]);
     }
 }
 
@@ -32,6 +31,7 @@ if ($method === 'DELETE') {
     if (isset($_GET['id'])) {
         $stmt = $conn->prepare("DELETE FROM helysegek WHERE az = ?");
         $stmt->execute([$_GET['id']]);
+        echo json_encode(["status" => "torolve"]);
     }
 }
 ?>
