@@ -2,23 +2,95 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>JavaScript CRUD</title>
+    <title>JavaScript CRUD - Szállodák</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { color: #003366; }
+        h2 { color: #0055aa; }
+        
+        .input-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background-color: #add8e6;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover { background-color: #90cedf; }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        li {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .btn-group button {
+            margin-left: 5px;
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+
         .footer-link {
             margin-top: 50px;
-            display: block;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
+            padding: 20px;
+            border-top: 2px solid #ddd;
+        }
+
+        .footer-link a {
+            text-decoration: none;
+            color: #000;
+            background: #add8e6;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<h2>Utazások kezelése</h2>
+<h1>Web programozás-1 Előadás Házi feladat</h1>
+<h2>Szállodák kezelése (JavaScript CRUD)</h2>
 
-<input type="text" id="nev" placeholder="Utazás neve">
-<input type="number" id="ar" placeholder="Ár">
-<button onclick="hozzaad()">Hozzáadás</button>
+<div class="input-container">
+    <input type="text" id="szallodaNev" placeholder="Szálloda neve">
+    <input type="number" id="helysegId" placeholder="Helység ID">
+    <button onclick="hozzaad()">Hozzáadás</button>
+</div>
 
 <ul id="lista"></ul>
 
@@ -26,6 +98,76 @@
     <a href="index.html">⬅ Vissza a főoldalra</a>
 </div>
 
-<script src="script.js"></script>
+<script>
+    // Adatok a szalloda.txt forrásfájl alapján [cite: 10, 22]
+    let szallodak = [
+        { id: 1, nev: "Galyatető", helyseg: 1 },
+        { id: 2, nev: "Hegyvidék", helyseg: 2 },
+        { id: 3, nev: "Sirály", helyseg: 3 },
+        { id: 4, nev: "Aranypart", helyseg: 4 },
+        { id: 5, nev: "Kék Balaton", helyseg: 5 },
+        { id: 6, nev: "Park", helyseg: 6 }
+    ];
+
+    function listaFrissit() {
+        const listaElem = document.getElementById("lista");
+        listaElem.innerHTML = "";
+
+        szallodak.forEach((sz, index) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span><strong>${sz.nev}</strong> (ID: ${sz.helyseg})</span>
+                <div class="btn-group">
+                    <button onclick="modosit(${index})">Szerkeszt</button>
+                    <button onclick="torol(${index})" style="background-color: #ffcccb;">Törlés</button>
+                </div>
+            `;
+            listaElem.appendChild(li);
+        });
+    }
+
+    function hozzaad() {
+        const nevInput = document.getElementById("szallodaNev");
+        const helyInput = document.getElementById("helysegId");
+
+        if (nevInput.value === "" || helyInput.value === "") {
+            alert("Kérlek töltsd ki mindkét mezőt!");
+            return;
+        }
+
+        const ujSzalloda = {
+            id: szallodak.length > 0 ? Math.max(...szallodak.map(s => s.id)) + 1 : 1,
+            nev: nevInput.value,
+            helyseg: parseInt(helyInput.value)
+        };
+
+        szallodak.push(ujSzalloda);
+        nevInput.value = "";
+        helyInput.value = "";
+        listaFrissit();
+    }
+
+    function torol(index) {
+        if (confirm("Biztosan törlöd ezt a szállodát?")) {
+            szallodak.splice(index, 1);
+            listaFrissit();
+        }
+    }
+
+    function modosit(index) {
+        const ujNev = prompt("Add meg az új nevet:", szallodak[index].nev);
+        const ujHely = prompt("Add meg az új Helység ID-t:", szallodak[index].helyseg);
+
+        if (ujNev !== null && ujHely !== null) {
+            szallodak[index].nev = ujNev;
+            szallodak[index].helyseg = parseInt(ujHely);
+            listaFrissit();
+        }
+    }
+
+    // Kezdeti betöltés
+    window.onload = listaFrissit;
+</script>
+
 </body>
 </html>
