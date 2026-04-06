@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Fetch API CRUD</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; }
+        table { margin: 20px auto; border-collapse: collapse; width: 80%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        .footer { margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <h1>Web programozás-1 Előadás Házi feladat</h1>
+    <h2>Helységek kezelése (Fetch API)</h2>
+
+    <input type="text" id="nev" placeholder="Város neve">
+    <input type="text" id="orszag" placeholder="Ország">
+    <button onclick="hozzaad()">Hozzáadás</button>
+
+    <table id="tabla">
+        <thead>
+            <tr><th>ID</th><th>Név</th><th>Ország</th><th>Műveletek</th></tr>
+        </thead>
+        <tbody id="lista"></tbody>
+    </table>
+
+    <div class="footer"><a href="index.html">⬅ Vissza a főoldalra</a></div>
+
+    <script src="fetch_script.js"></script>
+</body>
+</html>
