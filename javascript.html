@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>JavaScript CRUD</title>
+    <style>
+        .footer-link {
+            margin-top: 50px;
+            display: block;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
 <h2>Utazások kezelése</h2>
-<a href="index.html">⬅ Vissza a főoldalra</a>
 
-<br><br>
-    
 <input type="text" id="nev" placeholder="Utazás neve">
 <input type="number" id="ar" placeholder="Ár">
 <button onclick="hozzaad()">Hozzáadás</button>
 
 <ul id="lista"></ul>
+
+<div class="footer-link">
+    <a href="index.html">⬅ Vissza a főoldalra</a>
+</div>
 
 <script src="script.js"></script>
 </body>
