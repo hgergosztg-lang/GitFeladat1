@@ -1,29 +1,4 @@
-const API_URL = 'backend.php';
-
-async function listaFrissit() {
-    try {
-        const response = await fetch(API_URL);
-        const adatok = await response.json();
-        
-        const tbody = document.getElementById("lista");
-        tbody.innerHTML = "";
-        
-        adatok.forEach(h => {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${h.az}</td>
-                    <td>${h.nev}</td>
-                    <td>${h.orszag}</td>
-                    <td><button onclick="torol(${h.az})" style="background:#ffcdd2">Törlés</button></td>
-                </tr>`;
-        });
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-async function hozzaad() {
-    const nev = document.getElementById("nev").value;
+const nev = document.getElementById("nev").value;
     const orszag = document.getElementById("orszag").value;
 
     if (!nev || !orszag) return;
