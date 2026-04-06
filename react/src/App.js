@@ -144,7 +144,7 @@ export default function App() {
       <nav style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
         <button onClick={() => setPage('crud')} style={btnStyle(page === 'crud')}>Szálloda CRUD</button>
         <button onClick={() => setPage('tic')} style={btnStyle(page === 'tic')}>Amőba Játék</button>
-        <button onClick={() => setPage('calc')} style={btnStyle(page === 'calc')}>ProSzámológép</button>
+        <button onClick={() => setPage('calc')} style={btnStyle(page === 'calc')}>Számológép</button>
       </nav>
 
       <main style={{ background: 'white', padding: '30px', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
