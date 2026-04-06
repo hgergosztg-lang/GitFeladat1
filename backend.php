@@ -5,7 +5,7 @@ try {
     $conn = new PDO(
         'mysql:host=mysql.omega;dbname=hgergo16',
         'hgergo16@idbp.omega.c-host.hu',
-        'A_TE_JELSZÓD',
+        'Gamf123.',
         array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
     );
     $conn->exec("set names utf8");
