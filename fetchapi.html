@@ -3,17 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>Helységek kezelése</title>
+
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; margin: 20px; }
-        .container { background: white; padding: 20px; display: inline-block; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input { padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 8px 15px; background: #add8e6; border: none; cursor: pointer; font-weight: bold; }
-        table { margin: 20px auto; border-collapse: collapse; width: 80%; max-width: 600px; background: white; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        th { background-color: #add8e6; }
-        .footer { margin-top: 40px; border-top: 1px solid #ccc; padding-top: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+            margin: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            display: inline-block;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background: #add8e6;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 600px;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #add8e6;
+        }
+
+        .footer {
+            margin-top: 40px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
     </style>
 </head>
+
 <body>
 
     <h1>Helységek kezelése</h1>
@@ -21,6 +68,7 @@
     <div class="container">
         <input type="text" id="nev" placeholder="Város neve">
         <input type="text" id="orszag" placeholder="Ország">
+
         <button onclick="hozzaad()">Hozzáadás</button>
     </div>
 
@@ -37,9 +85,23 @@
     </table>
 
     <div class="footer">
-        <a href="index.html" style="text-decoration: none; color: black; font-weight: bold;">⬅ Vissza a főoldalra</a>
+        <a href="index.html" style="text-decoration:none; color:black; font-weight:bold;">
+            ⬅ Vissza a főoldalra
+        </a>
     </div>
 
     <script src="fetch_script.js"></script>
+
+    <script>
+        // ENTER gombos hozzáadás (UX upgrade)
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("orszag").addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    hozzaad();
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
