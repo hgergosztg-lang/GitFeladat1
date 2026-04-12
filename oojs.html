@@ -1,47 +1,97 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <title>OOJS alkalmazás</title>
+<meta charset="UTF-8">
+<title>OOJS Task Board</title>
 
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f4f4;
-            text-align: center;
-        }
+<style>
+    body {
+        font-family: Arial;
+        background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+    }
 
-        .card {
-            background: white;
-            padding: 10px;
-            margin: 10px auto;
-            width: 300px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+    h1 {
+        color: white;
+    }
 
-        button {
-            margin-top: 5px;
-            padding: 5px 10px;
-        }
+    .container {
+        margin-bottom: 20px;
+    }
 
-        input {
-            padding: 8px;
-            margin: 5px;
-        }
-    </style>
+    input {
+        padding: 10px;
+        width: 250px;
+        border-radius: 8px;
+        border: none;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    .addBtn {
+        background: #28a745;
+        color: white;
+    }
+
+    .board {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .card {
+        background: white;
+        width: 220px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        text-align: left;
+        position: relative;
+    }
+
+    .done {
+        background: #d4edda;
+        text-decoration: line-through;
+    }
+
+    .btn {
+        margin-top: 8px;
+        margin-right: 5px;
+        font-size: 12px;
+    }
+
+    .delete {
+        background: #dc3545;
+        color: white;
+    }
+
+    .complete {
+        background: #007bff;
+        color: white;
+    }
+</style>
 </head>
 
 <body>
 
-<h1>OOJS Feladatkezelő</h1>
+<h1>OOJS Smart Task Board</h1>
 
-<input type="text" id="taskInput" placeholder="Új feladat">
-<button onclick="app.addTask()">Hozzáadás</button>
+<div class="container">
+    <input type="text" id="taskInput" placeholder="Új feladat...">
+    <button class="addBtn" onclick="app.addTask()">Hozzáadás</button>
+</div>
 
-<div id="list"></div>
+<div class="board" id="board"></div>
 
 <script src="oojs.js"></script>
-
 </body>
 </html>
