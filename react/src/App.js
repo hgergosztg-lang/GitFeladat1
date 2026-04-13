@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // --- 1. MODUL: SZÁLLODA CRUD (szalloda.txt adatokkal) ---
 function SzallodaCRUD() {
@@ -81,30 +82,27 @@ function calculateWinner(s) {
   return null;
 }
 
-// --- 3. MODUL: KOMOLYABB CALCULATOR ---
+// --- 3. MODUL: CALCULATOR ---
 function Calculator() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
-
   const ops = ["/", "*", "+", "-", "."];
 
   const updateInput = (val) => {
-    if (ops.includes(val) && input === "" || ops.includes(val) && ops.includes(input.slice(-1))) {
-      return;
-    }
+    if ((ops.includes(val) && input === "") || (ops.includes(val) && ops.includes(input.slice(-1)))) return;
     setInput(input + val);
     if (!ops.includes(val)) {
-      setResult(eval(input + val).toString());
+      try { setResult(eval(input + val).toString()); } catch(e) {}
     }
   };
 
-  const calculate = () => { setInput(eval(input).toString()); };
+  const calculate = () => { try { setInput(eval(input).toString()); } catch(e) {} };
   const deleteLast = () => { if (input === "") return; setInput(input.slice(0, -1)); };
   const clearAll = () => { setInput(""); setResult(""); };
 
   return (
     <div style={{ maxWidth: '300px', margin: 'auto', background: '#222', padding: '15px', borderRadius: '10px' }}>
-      <h3 style={{ color: 'white', textAlign: 'center' }}> Számológép</h3>
+      <h3 style={{ color: 'white', textAlign: 'center' }}>Számológép</h3>
       <div style={{ background: '#444', color: 'white', padding: '10px', textAlign: 'right', minHeight: '50px', marginBottom: '10px', borderRadius: '5px' }}>
         <div style={{ fontSize: '14px', color: '#aaa' }}>{result ? '(' + result + ')' : ''}</div>
         <div style={{ fontSize: '24px' }}>{input || "0"}</div>
@@ -113,16 +111,12 @@ function Calculator() {
         <button onClick={clearAll} style={{ gridColumn: 'span 2', background: '#e74c3c', color: 'white' }}>AC</button>
         <button onClick={deleteLast} style={{ background: '#f39c12', color: 'white' }}>DEL</button>
         <button onClick={() => updateInput('/')}>/</button>
-        
         {[7,8,9].map(n => <button key={n} onClick={() => updateInput(n.toString())}>{n}</button>)}
         <button onClick={() => updateInput('*')}>*</button>
-        
         {[4,5,6].map(n => <button key={n} onClick={() => updateInput(n.toString())}>{n}</button>)}
         <button onClick={() => updateInput('-')}>-</button>
-        
         {[1,2,3].map(n => <button key={n} onClick={() => updateInput(n.toString())}>{n}</button>)}
         <button onClick={() => updateInput('+')}>+</button>
-        
         <button onClick={() => updateInput('0')} style={{ gridColumn: 'span 2' }}>0</button>
         <button onClick={() => updateInput('.')}>.</button>
         <button onClick={calculate} style={{ background: '#2ecc71', color: 'white' }}>=</button>
@@ -131,41 +125,61 @@ function Calculator() {
   );
 }
 
-// --- FŐ ALKALMAZÁS (SPA MENÜ) ---
+// --- 4. MODUL: AXIOS CRUD ---
+function AxiosCRUD() {
+  const [lista, setLista] = useState([]);
+  const API_URL = "http://localhost/utazas-projekt/backend.php"; // Ezt a címet ellenőrizd!
+
+  useEffect(() => {
+    axios.get(API_URL)
+      .then(res => setLista(res.data))
+      .catch(err => console.log("Adatbázis hiba:", err));
+  }, []);
+
+  return (
+    <div>
+      <h3>Adatbázis alapú CRUD (Axios)</h3>
+      <table border="1" style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead><tr style={{ background: '#eee' }}><th>ID</th><th>Város</th><th>Ország</th></tr></thead>
+        <tbody>
+          {lista.length > 0 ? lista.map(h => (
+            <tr key={h.az}><td>{h.az}</td><td>{h.nev}</td><td>{h.orszag}</td></tr>
+          )) : <tr><td colSpan="3">Nincs adat vagy a szerver nem fut.</td></tr>}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// --- FŐ ALKALMAZÁS ---
 export default function App() {
   const [page, setPage] = useState('crud');
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial', maxWidth: '800px', margin: 'auto', minHeight: '100vh', background: '#f4f7f6' }}>
-      <header style={{ textAlign: 'center', marginBottom: '30px' }}>
-        <h1 style={{ color: '#2c3e50' }}>Web-1 Beadandó</h1>
-         </header>
-      
-      <nav style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
-        <button onClick={() => setPage('crud')} style={btnStyle(page === 'crud')}>Szálloda CRUD</button>
-        <button onClick={() => setPage('tic')} style={btnStyle(page === 'tic')}>Amőba Játék</button>
+    <div style={{ padding: '20px', fontFamily: 'Arial', maxWidth: '800px', margin: 'auto' }}>
+      <h1>React Portfólió</h1>
+      <nav style={{ marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <button onClick={() => setPage('crud')} style={btnStyle(page === 'crud')}>Helyi CRUD</button>
+        <button onClick={() => setPage('tic')} style={btnStyle(page === 'tic')}>Amőba</button>
         <button onClick={() => setPage('calc')} style={btnStyle(page === 'calc')}>Számológép</button>
+        <button onClick={() => setPage('axios')} style={{ ...btnStyle(page === 'axios'), background: '#2ecc71', color: 'white' }}>Axios (DB)</button>
       </nav>
 
-      <main style={{ background: 'white', padding: '30px', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
+      <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '10px' }}>
         {page === 'crud' && <SzallodaCRUD />}
         {page === 'tic' && <TicTacToe />}
         {page === 'calc' && <Calculator />}
-      </main>
-
-      <footer style={{ textAlign: 'center', marginTop: '40px', color: '#7f8c8d', fontSize: '0.9em' }}>
-      </footer>
+        {page === 'axios' && <AxiosCRUD />}
+      </div>
     </div>
   );
 }
 
 const btnStyle = (active) => ({
-  padding: '12px 20px',
-  background: active ? '#3498db' : '#fff',
-  color: active ? 'white' : '#34495e',
-  border: '1px solid #3498db',
+  padding: '10px 15px',
+  background: active ? '#3498db' : '#f8f9fa',
+  color: active ? 'white' : '#333',
+  border: '1px solid #ccc',
   borderRadius: '5px',
-  cursor: 'pointer',
-  fontWeight: 'bold',
-  transition: '0.3s'
+  cursor: 'pointer'
 });
