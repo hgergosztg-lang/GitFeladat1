@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
 // --- 1. MODUL: SZÁLLODA CRUD (szalloda.txt adatokkal) ---
 function SzallodaCRUD() {
@@ -131,55 +130,31 @@ function Calculator() {
     </div>
   );
 }
-// - AXIOS CRUD -
-function AxiosCRUD() {
-  const [lista, setLista] = useState([]);
-  const API_URL = "http://localhost/utazas-projekt/backend.php"; // PONTOS CÍMRE ÁT KELL ÍRNI MAJD!!!!!!!!
-
-  useEffect(() => {
-    axios.get(API_URL).then(res => setLista(res.data)).catch(err => console.log(err));
-  }, []);
-
-  return (
-    <div>
-      <h3>Adatbázis alapú CRUD (Axios)</h3>
-      <table border="1" style={{ width: '100%' }}>
-        <thead><tr><th>ID</th><th>Város</th><th>Ország</th></tr></thead>
-        <tbody>
-          {lista.map(h => (
-            <tr key={h.az}><td>{h.az}</td><td>{h.nev}</td><td>{h.orszag}</td></tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
 
 // --- FŐ ALKALMAZÁS (SPA MENÜ) ---
 export default function App() {
-  const [page, setPage] = useState('crud'); // Alapértelmezett oldal
+  const [page, setPage] = useState('crud');
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial', maxWidth: '800px', margin: 'auto' }}>
-      <h1>React Portfólió</h1>
+    <div style={{ padding: '20px', fontFamily: 'Arial', maxWidth: '800px', margin: 'auto', minHeight: '100vh', background: '#f4f7f6' }}>
+      <header style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <h1 style={{ color: '#2c3e50' }}>Web-1 Beadandó</h1>
+         </header>
       
-      <nav style={{ marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-        <button onClick={() => setPage('crud')}>Helyi CRUD</button>
-        <button onClick={() => setPage('tic')}>Amőba</button>
-        <button onClick={() => setPage('calc')}>Számológép</button>
-        {/*GOMB AZ AXIOSHOZ */}
-        <button onClick={() => setPage('axios')} style={{ background: '#2ecc71', color: 'white' }}>
-          Axios (Adatbázis)
-        </button>
+      <nav style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
+        <button onClick={() => setPage('crud')} style={btnStyle(page === 'crud')}>Szálloda CRUD</button>
+        <button onClick={() => setPage('tic')} style={btnStyle(page === 'tic')}>Amőba Játék</button>
+        <button onClick={() => setPage('calc')} style={btnStyle(page === 'calc')}>Számológép</button>
       </nav>
 
-      <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '10px' }}>
+      <main style={{ background: 'white', padding: '30px', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
         {page === 'crud' && <SzallodaCRUD />}
         {page === 'tic' && <TicTacToe />}
         {page === 'calc' && <Calculator />}
-        {/* ÚJ FELTÉTEL */}
-        {page === 'axios' && <AxiosCRUD />}
-      </div>
+      </main>
+
+      <footer style={{ textAlign: 'center', marginTop: '40px', color: '#7f8c8d', fontSize: '0.9em' }}>
+      </footer>
     </div>
   );
 }
