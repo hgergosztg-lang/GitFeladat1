@@ -57,8 +57,6 @@ class SmartTask extends Task {
 class App {
     constructor() {
         this.tasks = [];
-
-        // 🔥 Kötelező elem: document.body.appendChild
         this.board = document.createElement("div");
         this.board.className = "board";
 
@@ -87,6 +85,4 @@ class App {
         input.value = "";
     }
 }
-
-// 🔥 globális példány (HTML onclick miatt kell)
 const app = new App();
